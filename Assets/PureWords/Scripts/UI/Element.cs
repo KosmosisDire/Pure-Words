@@ -14,7 +14,9 @@ public class Element : MonoBehaviour
     public Vector2 alignment = Vector2.one/2;
     public bool autoWidth = true;
     public bool autoHeight = true;
-    public bool square = false;
+    //public bool square = false;
+    [Range(0,1)]
+    public float squarness = 0;
     public bool autoPosX = true;
     public bool autoPosY = true;
     [SerializeField]

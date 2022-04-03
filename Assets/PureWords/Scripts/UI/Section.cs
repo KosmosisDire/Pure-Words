@@ -123,11 +123,10 @@ public class Section
                 element.autoHeight ? ElementHeight : element.rectTransform.rect.height
             );
 
-            if(element.square)
-            {
-                if(size.x < size.y) size.y = size.x;
-                else size.x = size.y;
-            }
+
+            if(size.x < size.y) size.y = Mathf.Lerp(size.y, size.x, element.squarness);
+            else size.x = Mathf.Lerp(size.x, size.y, element.squarness);
+            
 
             element.rectTransform.SetSize(size.x, size.y);
 
