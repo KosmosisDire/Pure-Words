@@ -39,4 +39,9 @@ public struct Move
         if(split.Length != 6) throw new System.Exception("Invalid move serialization");
         return new Move(new Word(split[0], new Vector2Int(int.Parse(split[1]), int.Parse(split[2])), bool.Parse(split[3])), split[5], int.Parse(split[4]));
     }
+
+    public override string ToString()
+    {
+        return $"Letters: {word.letters}, Starting Space: {word.startingSpace}, Horizontal: {word.horizontal}, Score: {score}, Username: {username}";
+    }
 }

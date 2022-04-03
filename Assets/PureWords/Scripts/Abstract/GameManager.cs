@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour
 
     PointIndicator pointsIndicator;
     Word currentWord;
-    Move lastMove;
+    Move? lastMove;
     
 
     public void Awake()
@@ -303,20 +303,24 @@ public class GameManager : MonoBehaviour
 
     public void HandleOtherPlayerMove(Move m)
     {
-        lastMove.word.HidePlacementIndicator(false);
+        if(lastMove != null)
+            lastMove?.word.HidePlacementIndicator(false);
+
         lastMove = m;
-        m.word.ShowPlacementIndicator(otherUserWordPlacement, wordIndicatorMargin);
-        Board.instance.CreatePermenantWord(m.word);
-        instance.AddToPlayerScore(m.username, m.score);
+        Board.instance.CreatePermenantWord(lastMove?.word);
+        
         IndicatePlacedWord();
     }
 
     public void IndicatePlacedWord()
     {
+        if(lastMove == null) return;
         pointsIndicator.SetColor(placedPoints);
         pointsIndicator.gameObject.SetActive(true);
-        pointsIndicator.transform.position = lastMove.word.tiles.Last().transform.position + new Vector3(0.5f, 0.3f, -0.1f);
-        pointsIndicator.UpdatePoints(lastMove.score);
+        pointsIndicator.transform.position = lastMove.Value.word.tiles.Last().transform.position + new Vector3(0.5f, 0.3f, -0.1f);
+        pointsIndicator.UpdatePoints(lastMove.Value.score);
+        AddToPlayerScore(lastMove?.username, lastMove.Value.score);
+        lastMove?.word.ShowPlacementIndicator(otherUserWordPlacement, wordIndicatorMargin);
     }
 
 
@@ -331,7 +335,6 @@ public class GameManager : MonoBehaviour
             GameNetwork.instance.SendMove(move.Value);
             Board.instance.Commit();
             TileTray.instance.ReplenishTiles();
-            AddToPlayerScore(move.Value.username, move.Value.score);
             move.Value.word.HidePlacementIndicator(true);
             lastMove = move.Value;
             IndicatePlacedWord();

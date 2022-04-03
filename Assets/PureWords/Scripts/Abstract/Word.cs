@@ -76,6 +76,7 @@ public class Word
         indicator = GameObject.Instantiate(GameManager.instance.wordPlacementIndicatorPrefab);
         indicator.color = color;
         indicator.size = new Vector2(horizontal ? (tiles.Length + margin * 2) : (1 + margin * 2) , horizontal ? (1 + margin * 2) : (tiles.Length + margin * 2));
+        indicator.transform.position = tiles[0].transform.position + new Vector3(-0.5f - margin, 0.5f + margin, 0);
     }
 
     public void HidePlacementIndicator(bool secondary = false)

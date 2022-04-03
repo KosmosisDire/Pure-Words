@@ -113,7 +113,7 @@ public class Client
             (
                 () => {
                     Move move = Move.Deserialize(message.data);
-                    
+                    GameManager.instance.HandleOtherPlayerMove(move);
                 }
             );
             return;
