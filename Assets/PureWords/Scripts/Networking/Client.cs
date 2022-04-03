@@ -30,7 +30,7 @@ public class Client
         bool ipv6 = Socket.OSSupportsIPv6;
         try
         {   
-            foreach (IPAddress ip in Dns.GetHostAddresses("thecodespace.ddns.net"))
+            foreach (IPAddress ip in Dns.GetHostAddresses("wordserver.servegame.com"))
             {
                 if (ip.AddressFamily == (ipv6 ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork))
                 {
@@ -49,7 +49,7 @@ public class Client
             try
             {
                 ipv6 = false;
-                foreach (IPAddress ip in Dns.GetHostAddresses("thecodespace.ddns.net"))
+                foreach (IPAddress ip in Dns.GetHostAddresses("wordserver.servegame.com"))
                 {
                     if (ip.AddressFamily == (ipv6 ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork))
                     {
