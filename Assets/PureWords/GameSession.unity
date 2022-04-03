@@ -977,7 +977,7 @@ MonoBehaviour:
   rectTransform: {fileID: 212469037}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 5.3642592
+  timer: 6.6453676
 --- !u!224 &212469037
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2851,7 +2851,7 @@ MonoBehaviour:
   rectTransform: {fileID: 615291275}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 5.3642592
+  timer: 6.6453676
 --- !u!114 &615291277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5171,7 +5171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f30b15cb5ee9a64388f353ef255af00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  diameter: 15
+  diameter: 5
   userPlacedTiles: []
   totalTilesOnBoard: 0
   tilePrefab: {fileID: 4823833385021492023, guid: 8188061ddb9f4b543b7fed58ee862dce, type: 3}
@@ -5430,7 +5430,7 @@ MonoBehaviour:
   rectTransform: {fileID: 1099784584}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 5.3642592
+  timer: 6.6453676
 --- !u!1 &1114793827
 GameObject:
   m_ObjectHideFlags: 0
@@ -6272,7 +6272,7 @@ MonoBehaviour:
   rectTransform: {fileID: 1528073340}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 5.3642592
+  timer: 6.6453676
 --- !u!224 &1528073340
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7608,7 +7608,7 @@ MonoBehaviour:
   rectTransform: {fileID: 1892997561}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 5.3642592
+  timer: 6.6453676
 --- !u!114 &1892997559
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -24,4 +24,16 @@ public class PointIndicator : MonoBehaviour
     {
         backgroundSprite.color = newColor;
     }
+
+    public void SetSortingOrder(int newOrderIndex)
+    {
+        backgroundSprite.sortingOrder = newOrderIndex;
+        pointsText.GetComponent<MeshRenderer>().sortingOrder = newOrderIndex + 1;
+    }
+
+    public void IncrementSortingOrder(int by)
+    {
+        backgroundSprite.sortingOrder += by;
+        pointsText.GetComponent<MeshRenderer>().sortingOrder += by;
+    }
 }

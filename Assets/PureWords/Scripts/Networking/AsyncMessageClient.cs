@@ -34,19 +34,21 @@ public class AsyncMessageClient
     IPEndPoint endPoint;
     CancellationToken token;
     ClientContext context;
+    bool ipv6;
     string Username => GameNetwork.instance.Username;
-    public AsyncMessageClient(HandleMessageCallback handleMessage, IPEndPoint endPoint, CancellationToken token = default)
+    public AsyncMessageClient(HandleMessageCallback handleMessage, IPEndPoint endPoint, bool ipv6 = false, CancellationToken token = default)
     {
         this.handleMessage = handleMessage;
         this.endPoint = endPoint;
         this.token = token;
+        this.ipv6 = ipv6;
     }
 
     public bool BeginReceive()
     {
         try
         {
-            TcpClient asyncClient = new TcpClient(new IPEndPoint(IPAddress.Any, 0));
+            TcpClient asyncClient = new TcpClient(new IPEndPoint(ipv6 ? IPAddress.IPv6Any : IPAddress.Any, 0));
             context = new ClientContext();
             context.Client = asyncClient;
             asyncClient.BeginConnect(endPoint.Address, endPoint.Port, new AsyncCallback(MovesConnectCallback), null);

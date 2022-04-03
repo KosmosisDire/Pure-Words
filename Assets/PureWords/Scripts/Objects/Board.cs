@@ -131,7 +131,7 @@ public class Board : MonoBehaviour
         {
             if(letters[pos.x,pos.y] == letter)
             {
-                return null;
+                return spaces[pos].tile;
             }
             else
             {

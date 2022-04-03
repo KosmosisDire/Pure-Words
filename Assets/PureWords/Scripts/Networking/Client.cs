@@ -27,22 +27,50 @@ public class Client
     {
         
         cts = new CancellationTokenSource();
+        bool ipv6 = Socket.OSSupportsIPv6;
         try
-        {
-            IPAddress ip = IPAddress.Parse(Dns.GetHostAddresses("thecodespace.ddns.net")[0].ToString());
-            client = new TcpClient(new IPEndPoint(IPAddress.Any, 0));
-            client.Connect(ip, 25048);
-            sep = new IPEndPoint(ip, 25048);
+        {   
+            foreach (IPAddress ip in Dns.GetHostAddresses("thecodespace.ddns.net"))
+            {
+                if (ip.AddressFamily == (ipv6 ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork))
+                {
+                    sep = new IPEndPoint(ip, 25048);
+                    break;
+                }
+            }
+
+            client = new TcpClient(new IPEndPoint(ipv6 ? IPAddress.IPv6Any : IPAddress.Any, 0));
+            client.Connect(sep);
         }
         catch (Exception e)
         {
             Debug.Log(e.Message);
-            Debug.Log ("Couldn't Connect to Server");
-            GameNetwork.instance.OnDisconnected();
-            return;
+            Debug.Log("Falling back to IPV4");
+            try
+            {
+                ipv6 = false;
+                foreach (IPAddress ip in Dns.GetHostAddresses("thecodespace.ddns.net"))
+                {
+                    if (ip.AddressFamily == (ipv6 ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork))
+                    {
+                        sep = new IPEndPoint(ip, 25048);
+                        break;
+                    }
+                }
+
+                client = new TcpClient(new IPEndPoint(ipv6 ? IPAddress.IPv6Any : IPAddress.Any, 0));
+                client.Connect(sep);
+            }
+            catch
+            {
+                Debug.Log(e.Message);
+                Debug.Log ("Couldn't Connect to Server");
+                GameNetwork.instance.OnDisconnected();
+                return;
+            }
         }
         
-        asyncClient = new AsyncMessageClient(HandleGameMessage, sep, cts.Token);
+        asyncClient = new AsyncMessageClient(HandleGameMessage, sep, ipv6, cts.Token);
         asyncClient.BeginReceive();
         GameNetwork.instance.online = true;
     }

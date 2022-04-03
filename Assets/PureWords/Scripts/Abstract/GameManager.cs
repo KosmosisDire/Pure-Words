@@ -199,6 +199,7 @@ public class GameManager : MonoBehaviour
 
         pointsIndicator = Instantiate(pointsIndicatorPrefab);
         pointsIndicator.gameObject.SetActive(false);
+        pointsIndicator.IncrementSortingOrder(2);
         Rules.BuildDictionary();
     }
 
@@ -303,21 +304,23 @@ public class GameManager : MonoBehaviour
 
     public void HandleOtherPlayerMove(Move m)
     {
-        lastMove = m;
-        Board.instance.CreatePermenantWord(lastMove?.word);
-        
-        IndicatePlacedWord();
+        Board.instance.CreatePermenantWord(m.word);
+        IndicatePlacedMove(m);
     }
 
-    public void IndicatePlacedWord()
+    PointIndicator placedIndicator;
+    public void IndicatePlacedMove(Move move)
     {
-        if(lastMove == null) return;
+        if(placedIndicator == null) placedIndicator = Instantiate(pointsIndicatorPrefab);
 
-        lastMove?.word.HidePlacementIndicator(false);
-        pointsIndicator.SetColor(placedPoints);
-        pointsIndicator.gameObject.SetActive(true);
-        pointsIndicator.transform.position = lastMove.Value.word.tiles.Last().transform.position + new Vector3(0.5f, 0.3f, -0.1f);
-        pointsIndicator.UpdatePoints(lastMove.Value.score);
+        if(lastMove != null)
+            lastMove?.word.HidePlacementIndicator(false);
+
+        lastMove = move;
+        placedIndicator.SetColor(placedPoints);
+        placedIndicator.gameObject.SetActive(true);
+        placedIndicator.transform.position = lastMove.Value.word.tiles.Last().transform.position + new Vector3(0.5f, 0.3f, -0.1f);
+        placedIndicator.UpdatePoints(lastMove.Value.score);
         AddToPlayerScore(lastMove?.username, lastMove.Value.score);
         lastMove?.word.ShowPlacementIndicator(otherUserWordPlacement, wordIndicatorMargin);
     }
@@ -335,8 +338,9 @@ public class GameManager : MonoBehaviour
             Board.instance.Commit();
             TileTray.instance.ReplenishTiles();
             move.Value.word.HidePlacementIndicator(true);
-            lastMove = move.Value;
-            IndicatePlacedWord();
+            pointsIndicator.gameObject.SetActive(false);
+            currentWord = null;
+            IndicatePlacedMove(move.Value);
             if(GameNetwork.instance.online) TileTray.instance.Save();
         }
         else if(!validMove)
