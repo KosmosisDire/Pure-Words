@@ -24,7 +24,9 @@ public class Toast : MonoBehaviour
     public SpacingMode spacingMode;
 
     public UnityEvent OnShow;
+    public UnityEvent OnShowCompleted;
     public UnityEvent OnHide;
+    public UnityEvent OnHideCompleted;
 
     //local
     public Vector3 ActiveOffset
@@ -61,57 +63,53 @@ public class Toast : MonoBehaviour
     [HideInInspector]
     public bool showing = false;
 
-    readonly CancellationTokenSource cts = new CancellationTokenSource();
+    //readonly CancellationTokenSource cts = new CancellationTokenSource();
 
-    public void ShowPermenant(float transitionTime)
-    {
-        Show(-1, transitionTime);   
-    }
-
-    public async void Show(float duration, float transitionTime)
+    public void Show(int transitionTime)
     {
         if(showing) return;
-
-        
-
         showing = true;
-        transform.DOLocalMove(transform.localPosition + ActiveOffset, transitionTime).SetEase(Ease.OutQuad);
+        transform.DOLocalMove(transform.localPosition + ActiveOffset, transitionTime/1000f).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            OnShowCompleted.Invoke();
+        });
+
         OnShow.Invoke();
-
-        if(duration == -1) return;
-        
-        try{
-            await Task.Delay((int)((duration + transitionTime) * 1000), cts.Token);
-        } 
-        catch(TaskCanceledException){
-            return;
-        }
-
-        transform.DOLocalMove(transform.localPosition - ActiveOffset, transitionTime).SetEase(Ease.InQuad);
-        OnHide.Invoke();
-
-        try{
-            await Task.Delay((int)(transitionTime * 1000), cts.Token);
-        } 
-        catch(TaskCanceledException){
-            return;
-        }
-
-        showing = false;
     }
 
-    public void Hide(float transitionTime)
+    public async void Peek(int stayDuration, int transitionTime)
+    {
+
+        Show(transitionTime);
+
+        // try{
+        //     await Task.Delay((int)((duration + transitionTime) * 1000), cts.Token);
+        // } 
+        // catch(TaskCanceledException){
+        //     return;
+        // }
+
+        await Task.Delay(stayDuration + transitionTime);
+
+        Hide(transitionTime);
+    }
+
+    public void Hide(int transitionTime)
     {
         if(!showing) return;
-        transform.DOMove(transform.position - ActiveOffset, transitionTime).SetEase(Ease.InQuad);
+
+        transform.DOLocalMove(transform.localPosition - ActiveOffset, transitionTime/1000f).SetEase(Ease.InQuad).OnComplete(() =>
+        {
+            OnHideCompleted.Invoke();
+        });
         OnHide.Invoke();
         showing = false;
     }
 
-    public void OnApplicationQuit()
-    {
-        cts.Cancel();
-    }
+    // public void OnApplicationQuit()
+    // {
+    //     cts.Cancel();
+    // }
 
     
 

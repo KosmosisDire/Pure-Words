@@ -345,11 +345,11 @@ public class GameManager : MonoBehaviour
         }
         else if(!validMove)
         {
-            invalidMoveToast.Show(1.5f, 0.2f);
+            invalidMoveToast.Peek(1500, 200);
         }
         else
         {
-            notTurnToast.Show(1.5f, 0.2f);
+            notTurnToast.Peek(1500, 200);
         }
     }
 

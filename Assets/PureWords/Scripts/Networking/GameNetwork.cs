@@ -166,7 +166,7 @@ public class GameNetwork : MonoBehaviour
     {
         Debug.Log("Disconnected");
         online = false;
-        disconnectToast.ShowPermenant(1);
+        disconnectToast.Show(1000);
         StartCoroutine(LoadSceneDelay(0, 5000));
     }
 
