@@ -81,7 +81,6 @@ public class Word
 
     public void HidePlacementIndicator(bool secondary = false)
     {
-        Debug.Log("Hiding placement indicator");
         if(indicator != null)
         {
             GameObject.Destroy(indicator.gameObject);

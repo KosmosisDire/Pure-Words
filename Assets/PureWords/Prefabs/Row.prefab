@@ -60,17 +60,24 @@ MonoBehaviour:
   spacingCorrectionSpeed: 2
   marginSpacingMode: 0
   marginsMode: 1
+  marginMeasurmentDirection: 0
   margins:
     top: 20
     left: 52
     bottom: 20
     right: 52
+  updateEveryFrame: 0
+  updateInterval: 10
+  independentOfParent: 0
   sections:
   - elements: []
     intermediateFirst: {fileID: 0}
     intermediateLast: {fileID: 0}
     layout: {fileID: 1102819369360175029}
   rectTransform: {fileID: 1102819369360175031}
+  lastResolution: {x: 1440, y: 2560}
+  iterationsAfterChange: 0
+  timer: 9.972569
 --- !u!114 &1102819369360175030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,7 +102,7 @@ MonoBehaviour:
   alignment: {x: 0.5, y: 0.5}
   autoWidth: 1
   autoHeight: 1
-  square: 0
+  squarness: 0
   autoPosX: 1
   autoPosY: 1
   extraSpacing: 0

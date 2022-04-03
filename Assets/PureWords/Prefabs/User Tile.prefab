@@ -107,7 +107,7 @@ MonoBehaviour:
   alignment: {x: 0.5, y: 0.5}
   autoWidth: 1
   autoHeight: 1
-  square: 1
+  squarness: 1
   autoPosX: 1
   autoPosY: 1
   extraSpacing: 0
@@ -139,6 +139,7 @@ MonoBehaviour:
   spacingCorrectionSpeed: 10
   marginSpacingMode: 0
   marginsMode: 2
+  marginMeasurmentDirection: 0
   margins:
     top: 0
     left: 20
@@ -159,9 +160,9 @@ MonoBehaviour:
     intermediateLast: {fileID: 0}
     layout: {fileID: 56246213276112359}
   rectTransform: {fileID: 56246213276112352}
-  lastResolution: {x: 1080, y: 2280}
+  lastResolution: {x: 1440, y: 2560}
   iterationsAfterChange: 0
-  timer: 4.5204678
+  timer: 8.73066
 --- !u!114 &9205922868322931159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,15 +176,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 56246213276112352}
-  graphic:
-  - {fileID: 56246214585031562}
-  - {fileID: 56246213926162043}
+  fadeGraphic: []
+  colorGraphic: []
   startColor: {r: 1, g: 1, b: 1, a: 0}
   endColor: {r: 1, g: 1, b: 1, a: 1}
   startSize: {x: 0, y: 0}
   endSize: {x: 0, y: 0}
   startPosition: {x: 0, y: 0}
   endPosition: {x: 0, y: 0}
+  disableOnFadeOut: 1
+  autoSetColorOnStart: 1
 --- !u!114 &6660772964688044569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,7 +274,7 @@ MonoBehaviour:
   alignment: {x: 0.5, y: 0.5}
   autoWidth: 1
   autoHeight: 0
-  square: 0
+  squarness: 0
   autoPosX: 1
   autoPosY: 0
   extraSpacing: 0
@@ -371,7 +373,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.4
+  m_fontSize: 40.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -436,7 +438,7 @@ MonoBehaviour:
   alignment: {x: 0.5, y: 0.5}
   autoWidth: 1
   autoHeight: 1
-  square: 0
+  squarness: 0
   autoPosX: 1
   autoPosY: 1
   extraSpacing: 0
@@ -541,7 +543,7 @@ MonoBehaviour:
   alignment: {x: 0.5, y: 0.5}
   autoWidth: 1
   autoHeight: 1
-  square: 1
+  squarness: 0
   autoPosX: 0
   autoPosY: 1
   extraSpacing: 0
