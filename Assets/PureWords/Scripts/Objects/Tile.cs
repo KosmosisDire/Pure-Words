@@ -51,6 +51,7 @@ public class Tile : MonoBehaviour
     public void Init(char _letter)
     {
         letter = _letter;
+        gameObject.name = letter.ToString();
         init = true;
         score = TileBag.tileScores[letter];
 

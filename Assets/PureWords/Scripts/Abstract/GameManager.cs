@@ -303,9 +303,6 @@ public class GameManager : MonoBehaviour
 
     public void HandleOtherPlayerMove(Move m)
     {
-        if(lastMove != null)
-            lastMove?.word.HidePlacementIndicator(false);
-
         lastMove = m;
         Board.instance.CreatePermenantWord(lastMove?.word);
         
@@ -315,6 +312,8 @@ public class GameManager : MonoBehaviour
     public void IndicatePlacedWord()
     {
         if(lastMove == null) return;
+
+        lastMove?.word.HidePlacementIndicator(false);
         pointsIndicator.SetColor(placedPoints);
         pointsIndicator.gameObject.SetActive(true);
         pointsIndicator.transform.position = lastMove.Value.word.tiles.Last().transform.position + new Vector3(0.5f, 0.3f, -0.1f);

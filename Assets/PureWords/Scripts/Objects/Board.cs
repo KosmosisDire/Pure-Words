@@ -114,12 +114,12 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void CreatePermenantTile(char letter, Vector2Int pos)
+    public Tile CreatePermenantTile(char letter, Vector2Int pos)
     {
         if(pos.x > diameter || pos.y > diameter || pos.x < 0 || pos.y < 0)
         {
             Debug.LogWarning("Attempted to place letter outside of board");
-            return;
+            return null;
         }
 
         if(userPlacedTiles.Any(t => t.placedSpace.coordinates == pos))
@@ -131,7 +131,7 @@ public class Board : MonoBehaviour
         {
             if(letters[pos.x,pos.y] == letter)
             {
-                return;
+                return null;
             }
             else
             {
@@ -148,16 +148,18 @@ public class Board : MonoBehaviour
         tile.IncrementSortingOrder(-4);
         totalTilesOnBoard++;
         SetSpace(pos, tile);
+        return tile;
     }
 
     public void CreatePermenantWord(Word word)
     {
         int x = word.startingSpace.x;
         int y = word.startingSpace.y;
-
+        word.tiles = new Tile[word.letters.Length];
         for (int i = 0; i < word.letters.Length; i++)
         {
-            CreatePermenantTile(word.letters[i], new Vector2Int(x, y));
+            Tile t = CreatePermenantTile(word.letters[i], new Vector2Int(x, y));
+            word.tiles[i] = t;
             if (word.horizontal) x++;
             else y++;
         }

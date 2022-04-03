@@ -40,6 +40,6 @@ public class ScaleColliderRect : MonoBehaviour
 
         GetComponent<BoxCollider2D>().size = size;
         GetComponent<BoxCollider2D>().offset = Vector2.zero;
-        GetComponent<RectTransform>().position = center;
+        GetComponent<RectTransform>().position = new Vector3(center.x, center.y, GetComponent<RectTransform>().position.z);
     }
 }

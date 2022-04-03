@@ -977,7 +977,7 @@ MonoBehaviour:
   rectTransform: {fileID: 212469037}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 0.47752252
+  timer: 5.3642592
 --- !u!224 &212469037
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2851,7 +2851,7 @@ MonoBehaviour:
   rectTransform: {fileID: 615291275}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 0.47752252
+  timer: 5.3642592
 --- !u!114 &615291277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4007,7 +4007,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 743670731}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5220,6 +5220,7 @@ MonoBehaviour:
   - {x: 13, y: 9}
   - {x: 5, y: 13}
   - {x: 9, y: 13}
+  - {x: 7, y: 7}
   doubleWords:
   - {x: 1, y: 1}
   - {x: 2, y: 2}
@@ -5237,7 +5238,6 @@ MonoBehaviour:
   - {x: 12, y: 12}
   - {x: 11, y: 11}
   - {x: 10, y: 10}
-  - {x: 7, y: 7}
   tripleWords:
   - {x: 0, y: 0}
   - {x: 0, y: 7}
@@ -5262,14 +5262,14 @@ MonoBehaviour:
   points: 0
   pointsIndicatorPrefab: {fileID: 2478360199316719202, guid: 45b38f379f144f2489b7f3f790617bbe, type: 3}
   validPoints: {r: 0.77303636, g: 0.8980392, b: 0.5294118, a: 1}
-  invalidPoints: {r: 0.990566, g: 0.6168046, b: 0.5934051, a: 1}
+  invalidPoints: {r: 0.9607843, g: 0.5550099, b: 0.5294118, a: 1}
   placedPoints: {r: 0.3794055, g: 0.4255442, b: 0.9245283, a: 1}
   invalidMoveToast: {fileID: 1653148263}
   notTurnToast: {fileID: 676690024}
   wordPlacementIndicatorPrefab: {fileID: 4581243966220622530, guid: a0c8edcf8765d15469b9bf794010a248, type: 3}
-  validWordPlacement: {r: 0.69187933, g: 0.9528302, b: 0.43596476, a: 0.4627451}
-  invalidWordPlacement: {r: 0.9433962, g: 0.4617511, b: 0.43164828, a: 0.5372549}
-  otherUserWordPlacement: {r: 0.44235668, g: 0.43137252, b: 0.94509804, a: 0.36078432}
+  validWordPlacement: {r: 0.77254903, g: 0.8980392, b: 0.5294118, a: 1}
+  invalidWordPlacement: {r: 0.9607843, g: 0.5568628, b: 0.5294118, a: 1}
+  otherUserWordPlacement: {r: 0.38039216, g: 0.42745098, b: 0.9254902, a: 1}
   wordIndicatorMargin: 0.05
   playerStatsList: {fileID: 109837518}
   playerStatsPrefab: {fileID: 6379413095437430077, guid: 061024f4be6b4a6459578d8980652edc, type: 3}
@@ -5430,7 +5430,7 @@ MonoBehaviour:
   rectTransform: {fileID: 1099784584}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 0.47752252
+  timer: 5.3642592
 --- !u!1 &1114793827
 GameObject:
   m_ObjectHideFlags: 0
@@ -6272,7 +6272,7 @@ MonoBehaviour:
   rectTransform: {fileID: 1528073340}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 0.47752252
+  timer: 5.3642592
 --- !u!224 &1528073340
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7608,7 +7608,7 @@ MonoBehaviour:
   rectTransform: {fileID: 1892997561}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 0.47752252
+  timer: 5.3642592
 --- !u!114 &1892997559
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -93,7 +93,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.9
+  m_fontSize: 137.03
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -364,7 +364,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -141.20001, y: -145.5}
+  m_SizeDelta: {x: -48.5, y: -48.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6872770970171986757
 CanvasRenderer:
@@ -387,7 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5, g: 0.40246642, b: 0.2476415, a: 1}
+  m_Color: {r: 0.10980393, g: 0.06666667, b: 0.09019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -522,15 +522,16 @@ MonoBehaviour:
   autoSetGlobalSpacing: 0
   spacingCorrectionSpeed: 2
   marginSpacingMode: 1
-  marginsMode: 1
+  marginsMode: 0
+  marginMeasurmentDirection: 4
   margins:
-    top: 0.3
-    left: 0.2
-    bottom: 0.3
-    right: 0.2
-  updateEveryFrame: 0
+    top: 0.1
+    left: 0.1
+    bottom: 0.1
+    right: 0.1
+  updateEveryFrame: 1
   updateInterval: 10
-  independentOfParent: 0
+  independentOfParent: 1
   sections:
   - elements:
     - {fileID: 6540124002680274887}
@@ -538,8 +539,8 @@ MonoBehaviour:
     intermediateLast: {fileID: 0}
     layout: {fileID: 7813015513037310756}
   rectTransform: {fileID: 3695771287790162963}
-  lastResolution: {x: 1080, y: 2204}
-  iterationsAfterChange: 5
+  lastResolution: {x: 1080, y: 2280}
+  iterationsAfterChange: 0
   timer: 10
 --- !u!1 &3977905769996370124
 GameObject:
@@ -580,7 +581,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 176.5, y: 2037.5}
   m_SizeDelta: {x: 353, y: 485}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3977905769996370113
@@ -693,6 +694,7 @@ MonoBehaviour:
   spacingCorrectionSpeed: 2
   marginSpacingMode: 0
   marginsMode: 0
+  marginMeasurmentDirection: 0
   margins:
     top: 0
     left: 0
@@ -709,6 +711,6 @@ MonoBehaviour:
     intermediateLast: {fileID: 0}
     layout: {fileID: 1708159343}
   rectTransform: {fileID: 3977905769996370127}
-  lastResolution: {x: 1080, y: 2204}
-  iterationsAfterChange: 5
+  lastResolution: {x: 1080, y: 2280}
+  iterationsAfterChange: 0
   timer: 10

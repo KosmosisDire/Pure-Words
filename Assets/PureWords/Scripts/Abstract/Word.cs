@@ -72,7 +72,7 @@ public class Word
 
     public void ShowPlacementIndicator(Color color, float margin = 0.1f)
     {
-        IncrementSortingOrder(1);
+        IncrementSortingOrder(4);
         indicator = GameObject.Instantiate(GameManager.instance.wordPlacementIndicatorPrefab);
         indicator.color = color;
         indicator.size = new Vector2(horizontal ? (tiles.Length + margin * 2) : (1 + margin * 2) , horizontal ? (1 + margin * 2) : (tiles.Length + margin * 2));
@@ -84,7 +84,8 @@ public class Word
         if(indicator != null)
         {
             GameObject.Destroy(indicator.gameObject);
-            IncrementSortingOrder(-1);
+            indicator = null;
+            IncrementSortingOrder(-4);
         }
 
         if(secondary)
