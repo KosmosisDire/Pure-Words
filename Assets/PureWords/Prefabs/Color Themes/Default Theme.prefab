@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1278121022342697095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1278121022342697089}
+  - component: {fileID: 1278121022342697088}
+  m_Layer: 0
+  m_Name: Default Theme
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1278121022342697089
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278121022342697095}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.20035017, y: 2.8123965, z: -14.268929}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1278121022342697088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278121022342697095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1391d2b88da15b48b5a482d9651ced0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  darkTheme: 1
+  pallette:
+  - {r: 0.8962264, g: 0.2656102, b: 0.07186722, a: 1}
+  - {r: 0.8980392, g: 0.5636647, b: 0.07058823, a: 1}
+  autoGenerateTheme: 0
+  neutral: {r: 0.8773585, g: 0.65619344, b: 0.47592562, a: 1}
+  accent: {r: 0.9622642, g: 0.523235, b: 0.21333215, a: 1}
+  detail: {r: 0.6616995, g: 0.49019608, b: 0.69803923, a: 1}
+  warning: {r: 0.8773585, g: 0.4454297, b: 0.43454075, a: 1}
+  success: {r: 0.71525294, g: 0.8773585, b: 0.4262638, a: 1}
+  info: {r: 0.39189103, g: 0.3224012, b: 0.990566, a: 1}
+  boardSpaces: {r: 0.6037736, g: 0.24494949, b: 0.08259169, a: 1}
+  boardBackground: {r: 0.21698111, g: 0.121028386, b: 0.08904414, a: 1}
+  WordMultiply: {r: 0.7735849, g: 0.27367392, b: 0.28991878, a: 1}
+  LetterMultiply: {r: 0.44250622, g: 0.60426587, b: 0.8301887, a: 1}
+  sessionPallateColor: {r: 0.8962264, g: 0.2656102, b: 0.07186722, a: 1}

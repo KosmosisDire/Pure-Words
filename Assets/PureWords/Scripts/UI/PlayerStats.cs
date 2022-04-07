@@ -10,8 +10,7 @@ using UnityEngine.UI.StackLayout;
 
 public class PlayerStats : MonoBehaviour
 {
-    public Color turnColor = Color.white;
-    public Color normalColor = Color.white;
+    public ThemedColorTween turnColorTween;
     public float turnWidthMultiplier = 1.1f;
     public Graphic background;
     public Element element;
@@ -30,12 +29,12 @@ public class PlayerStats : MonoBehaviour
 
     public void TurnStart()
     {
-        background.DOColor(turnColor, 0.5f);
+        turnColorTween.PlayForward(0.5f, true);
     }
 
     public void TurnEnd()
     {
-        background.DOColor(normalColor, 0.5f);
+        turnColorTween.PlayBackward(0.5f, true);
     }
 
 

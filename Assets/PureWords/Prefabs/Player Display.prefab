@@ -75,8 +75,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4291810009
+  m_fontColor: {r: 0.85, g: 0.8229212, b: 0.8125, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -239,8 +239,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4293388504
+  m_fontColor: {r: 0.847, g: 0.90999997, b: 0.90744066, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -389,7 +389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.10980393, g: 0.06666667, b: 0.09019608, a: 1}
+  m_Color: {r: 0.050000012, g: 0.04097376, b: 0.03750001, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -450,6 +450,7 @@ GameObject:
   - component: {fileID: 6379413095437430077}
   - component: {fileID: 1279902081}
   - component: {fileID: 1708159343}
+  - component: {fileID: 1938470493431429493}
   m_Layer: 5
   m_Name: Player Display
   m_TagString: Untagged
@@ -499,7 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.20784315, g: 0.18431373, b: 0.17254902, a: 1}
+  m_Color: {r: 0.15, g: 0.12292125, b: 0.112500004, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -528,8 +529,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f31cf20d83b10134da679b11dc9d9924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnColor: {r: 0.46226418, g: 0.3096298, b: 0.23331259, a: 1}
-  normalColor: {r: 0.20784314, g: 0.18431373, b: 0.17254902, a: 1}
+  turnColorTween:
+    graphic: {fileID: 3977905769996370126}
+    startColor:
+      type: 2
+      shade: 2
+      value: 0.8
+      complement: 0
+    endColor:
+      type: 3
+      shade: 3
+      value: 0.8
+      complement: 0
   turnWidthMultiplier: 1.1
   background: {fileID: 3977905769996370126}
   element: {fileID: 1279902081}
@@ -557,7 +568,7 @@ MonoBehaviour:
   alignment: {x: 0.5, y: 0.5}
   autoWidth: 1
   autoHeight: 1
-  squarness: 0.5
+  squarness: 0
   autoPosX: 1
   autoPosY: 1
   extraSpacing: 0
@@ -605,6 +616,43 @@ MonoBehaviour:
     intermediateLast: {fileID: 0}
     layout: {fileID: 1708159343}
   rectTransform: {fileID: 3977905769996370127}
-  lastResolution: {x: 1440, y: 2560}
+  lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
   timer: 10
+--- !u!114 &1938470493431429493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3977905769996370124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7836632732954c04c8687ad61bacaf63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colors:
+  - graphic: {fileID: 3977905769996370126}
+    color:
+      type: 2
+      shade: 2
+      value: -0.7
+      complement: 0
+  - graphic: {fileID: 5608972018217241751}
+    color:
+      type: 4
+      shade: 6
+      value: 0.7
+      complement: 1
+  - graphic: {fileID: 9222923842076174459}
+    color:
+      type: 2
+      shade: 1
+      value: -0.9
+      complement: 0
+  - graphic: {fileID: 2140148359}
+    color:
+      type: 2
+      shade: 6
+      value: 0.7
+      complement: 0

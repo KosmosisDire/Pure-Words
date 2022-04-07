@@ -12,8 +12,8 @@ public class Rules
     public static bool useIsConnectedToPreviousMoves = true;
     public static bool useIsConnectedToSelf = true;
     public static bool useIsDictionaryMove = true;
+    public static bool firstTurnOnCenter = true;
     public static bool anychronousTurns = false;
-
     public static bool allowProperNouns = false;
     public static bool allowNames = false;
     public static bool allowAbbreviations = false;
@@ -296,7 +296,7 @@ public class GameManager : MonoBehaviour
         playerStatistics[turnUsername].TurnStart();
 
         //vibrate phone if it's my turn
-        if(isMyTurn)
+        if(isMyTurn && GameNetwork.instance.onlinePlayers.Count > 1)
         {
             Handheld.Vibrate();
         }

@@ -39,7 +39,7 @@ public class Tile : MonoBehaviour
     public TweenerCore<Vector3, Vector3, VectorOptions> currentScaleTween;
     public TweenerCore<Vector3, Vector3, VectorOptions> currentMoveTween;
 
-
+    public bool IsVowel => letter == 'A' || letter == 'E' || letter == 'I' || letter == 'O' || letter == 'U';
     Rigidbody2D rb;
     TargetJoint2D targetJoint;
     SliderJoint2D sliderJoint;
@@ -187,7 +187,7 @@ public class Tile : MonoBehaviour
 
     public void MoveToTray(bool updateScale = true)
     {
-        TileTray.instance.letterTiles.Add(this);
+        TileTray.instance.inTray.Add(this);
         inTray = true;
         solidCollider.enabled = true;
         
@@ -204,7 +204,7 @@ public class Tile : MonoBehaviour
 
     public void RemoveFromTray(bool updateScale = true)
     {
-        TileTray.instance.letterTiles.Remove(this);
+        TileTray.instance.inTray.Remove(this);
         inTray = false;
         solidCollider.enabled = false;
         sliderJoint.enabled = false;

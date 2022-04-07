@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using DG.Tweening;
 using UnityEngine;
@@ -7,7 +8,14 @@ using UnityEngine.UI;
 
 public class TileTray : MonoBehaviour
 {
-    [HideInInspector] public List<Tile> letterTiles = new List<Tile>();
+    [HideInInspector] public List<Tile> inTray = new List<Tile>();
+    [HideInInspector] public List<Tile> unplacedTiles = new List<Tile>();
+    [HideInInspector] public List<Tile> uncommitedTiles = new List<Tile>();
+
+    public int InTrayCount => inTray.Count;
+    public int UnplacedCount => unplacedTiles.Count;
+    public int UncommitedCount => uncommitedTiles.Count;
+
     [HideInInspector] public Tile selectedTile;
     public RectTransform tray;
     public Collider2D blockingCollider;
@@ -16,7 +24,7 @@ public class TileTray : MonoBehaviour
     public TileBag bag;
     public static TileTray instance;
     [HideInInspector] public float ScreenWidth => Camera.main.orthographicSize * 2 * ((float)Screen.width / Screen.height);
-    public Vector3 TargetUITileSize => Vector3.Min(Vector3.one * (ScreenWidth-0.5f) / letterTiles.Count, Vector3.one * (ScreenWidth) / 6);
+    public Vector3 TargetUITileSize => Vector3.Min(Vector3.one * (ScreenWidth-0.5f) / InTrayCount, Vector3.one * (ScreenWidth) / 6);
     // Start is called before the first frame update
     public void Start()
     {
@@ -56,7 +64,7 @@ public class TileTray : MonoBehaviour
 
     public void ReplenishTiles()
     {
-        int newTilecount = Mathf.Max(Mathf.Min(traySize - (letterTiles.Count + Board.instance.userPlacedTiles.Count), bag.availableTiles.Count), 0);
+        int newTilecount = Mathf.Max(Mathf.Min(traySize - (InTrayCount + Board.instance.userPlacedTiles.Count), bag.availableTiles.Count), 0);
         if(newTilecount == 0) return;
 
         Tile[] tempTray = new Tile[newTilecount];
@@ -91,7 +99,7 @@ public class TileTray : MonoBehaviour
 
     public bool Load()
     {
-        if(letterTiles.Count > 0) return false;
+        if(InTrayCount > 0) return false;
         bool load = PlayerPrefs.HasKey("Tray" + GameNetwork.instance.GameCode.ToString());
         if(load)
             Deserialize(PlayerPrefs.GetString("Tray" + GameNetwork.instance.GameCode.ToString()));
@@ -100,29 +108,15 @@ public class TileTray : MonoBehaviour
 
     public bool ContainsVowel()
     {
-        bool hasVowel = false;
-        foreach(Tile tile in letterTiles)
-        {
-            if(tile.letter == 'A' || tile.letter == 'E' || tile.letter == 'I' || tile.letter == 'O' || tile.letter == 'U')
-            {
-                hasVowel = true;
-                break;
-            }
-        }
-
-        return hasVowel;
+        return inTray.Any(tile => tile.IsVowel);
     }
 
     public void UpdateTileScale(float tweenDuration = 0.4f)
     {
-        for (int i = 0; i < letterTiles.Count; i++)
-        {
-            Tile tile = letterTiles[i];
-            tile.transform.DOScale(TargetUITileSize, tweenDuration);
-        }
+        inTray.ForEach(tile => tile.transform.DOScale(TargetUITileSize, tweenDuration));
 
         //set tray rect top to fit the tiles
-        Canvas c = FindObjectOfType<Canvas>();
+        Canvas c = FindObjectOfType<Canvas>(); 
         tray.DOSizeDelta(new Vector2(tray.sizeDelta.x, TargetUITileSize.x * 1/c.transform.localScale.x * 1.7f), tweenDuration);
         
         UpdateTileLimits();
@@ -130,15 +124,15 @@ public class TileTray : MonoBehaviour
 
     public void UpdateTileLimits()
     {
-        for (int i = 0; i < letterTiles.Count; i++)
+        for (int i = 0; i < InTrayCount; i++)
         {
-            Tile tile = letterTiles[i];
+            Tile tile = inTray[i];
             if(!tile.GetComponent<SliderJoint2D>()) continue;
             
             tile.GetComponent<SliderJoint2D>().limits = new JointTranslationLimits2D()
             {
-                min = -ScreenWidth / 2 + TargetUITileSize.x/2 + 0.1f,
-                max = ScreenWidth / 2 - TargetUITileSize.x/2 - 0.1f 
+                min = -ScreenWidth / 2 + TargetUITileSize.x/2 + 0.15f,
+                max = ScreenWidth / 2 - TargetUITileSize.x/2 - 0.15f 
             };
         }
     }
@@ -146,7 +140,7 @@ public class TileTray : MonoBehaviour
     public string Serialize()
     {
         string serialized = "";
-        foreach(Tile tile in letterTiles)
+        foreach(Tile tile in inTray)
         {
             serialized += tile.letter;
         }

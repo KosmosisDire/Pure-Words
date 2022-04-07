@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -5,13 +6,38 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.StackLayout;
 
+
+
+[Serializable]
+public class ThemedColorTween
+{
+    public Graphic graphic;
+    [SerializeField]
+    ThemedColor startColor;
+    [SerializeField]
+    ThemedColor endColor;
+
+    public Color StartColor => startColor.Color;
+    public Color EndColor => endColor.Color;
+
+    public void PlayForward(float transitionTime, bool setInitialColor = false)
+    {
+        if(setInitialColor) graphic.color = startColor.Color;
+        graphic.DOColor(endColor.Color, transitionTime);
+    }
+
+    public void PlayBackward(float transitionTime, bool setInitialColor = false)
+    {
+        if(setInitialColor) graphic.color = endColor.Color;
+        graphic.DOColor(startColor.Color, transitionTime);
+    }
+}
+
 public class CommonTweens : MonoBehaviour
 {
     public RectTransform rectTransform;
     public List<Graphic> fadeGraphic = new List<Graphic>();
-    public List<Graphic> colorGraphic = new List<Graphic>();
-    public Color startColor;
-    public Color endColor;
+    public List<ThemedColorTween> colorTweens = new List<ThemedColorTween>();
     public Vector2 startSize;
     public Vector2 endSize;
     public Vector2 startPosition;
@@ -23,20 +49,19 @@ public class CommonTweens : MonoBehaviour
     {
         if (autoSetColorOnStart)
         {
-            colorGraphic.ForEach(g => g.color = endColor);
+            colorTweens.ForEach(t => t.graphic.color = t.EndColor);
         }
     }
 
 
     public void FadeColorIn(float duration)
     {
-        
-        colorGraphic.ForEach(g => g.DOColor(endColor, duration));
+        colorTweens.ForEach(t => t.PlayForward(duration));
     }
 
     public void FadeColorOut(float duration)
     {
-        colorGraphic.ForEach(g => g.DOColor(startColor, duration));
+        colorTweens.ForEach(t => t.PlayBackward(duration));
     }
 
     public void FadeAlphaIn(float duration)
