@@ -187,7 +187,9 @@ public class Tile : MonoBehaviour
 
     public void MoveToTray(bool updateScale = true)
     {
-        TileTray.instance.inTray.Add(this);
+        if(!TileTray.instance.inTray.Contains(this))
+            TileTray.instance.inTray.Add(this);
+            
         inTray = true;
         solidCollider.enabled = true;
         
@@ -219,6 +221,8 @@ public class Tile : MonoBehaviour
         shadow.enabled = false;
         placed = true;
 
+        TileTray.instance.unplacedTiles.Remove(this);
+
         if(GetComponent<Rigidbody2D>())
         {
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
@@ -236,6 +240,8 @@ public class Tile : MonoBehaviour
         IncrementSortingOrder(10);
         shadow.enabled = true;
         placed = false;
+
+        TileTray.instance.unplacedTiles.Add(this);
 
         if(GetComponent<Rigidbody2D>())
         {

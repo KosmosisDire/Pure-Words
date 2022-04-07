@@ -58,13 +58,17 @@ public class TileTray : MonoBehaviour
         if(vowel && letter == ' ') tile.Init(bag.DrawVowel());
         else if(letter == ' ') tile.Init(bag.DrawTile());
         else tile.Init(letter);
+
+        inTray.Add(tile);
+        unplacedTiles.Add(tile);
+        uncommitedTiles.Add(tile);
         
         return tile;
     }
 
     public void ReplenishTiles()
     {
-        int newTilecount = Mathf.Max(Mathf.Min(traySize - (InTrayCount + Board.instance.userPlacedTiles.Count), bag.availableTiles.Count), 0);
+        int newTilecount = Mathf.Max(Mathf.Min(traySize - UncommitedCount, bag.availableTiles.Count), 0);
         if(newTilecount == 0) return;
 
         Tile[] tempTray = new Tile[newTilecount];
@@ -140,12 +144,7 @@ public class TileTray : MonoBehaviour
     public string Serialize()
     {
         string serialized = "";
-        foreach(Tile tile in inTray)
-        {
-            serialized += tile.letter;
-        }
-
-        foreach(Tile tile in Board.instance.userPlacedTiles)
+        foreach(Tile tile in uncommitedTiles)
         {
             serialized += tile.letter;
         }

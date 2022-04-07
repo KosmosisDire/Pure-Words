@@ -337,6 +337,7 @@ public class Board : MonoBehaviour
     {
         foreach(Tile tile in userPlacedTiles)
         {
+            TileTray.instance.uncommitedTiles.Remove(tile);
             tile.movable = false;
             tile.selectionCollider.enabled = false;
             tile.IncrementSortingOrder(-4);
