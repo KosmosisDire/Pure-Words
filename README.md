@@ -1,3 +1,5 @@
+### Currently not being worked on, however it can be used for reference.
+
 # Pure-Words
 A scrabble-like game intended to fix the many problems with the ones currently available for Android and PC.
 
