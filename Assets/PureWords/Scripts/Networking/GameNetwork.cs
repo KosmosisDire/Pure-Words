@@ -11,24 +11,24 @@ public class GameNetwork : MonoBehaviour
 {
     public static GameNetwork instance;
     public Client client;
-    public int _gameCode;
-    public int GameCode 
+    public string _gameCode;
+    public string GameCode 
     { 
         get
         {
             if(!string.IsNullOrWhiteSpace(gameCodeInput.text))
             { 
-                _gameCode = int.Parse(gameCodeInput.text);
+                _gameCode = gameCodeInput.text;
                 GameCode = _gameCode;
             }
             
             return _gameCode;
         }
-        private set
+        set
         { 
             _gameCode = value;
-            gameCodeInput.SetTextWithoutNotify(_gameCode.ToString());
-            gameCodeText.text = _gameCode.ToString();
+            gameCodeInput.SetTextWithoutNotify(_gameCode);
+            gameCodeText.text = _gameCode;
         }
     }
 
@@ -38,17 +38,11 @@ public class GameNetwork : MonoBehaviour
     public TMP_InputField usernameText;
 
     [Header("Waiting Room")]
-    public StackLayout onlinePlayersWaitingRoom;
-    public StackLayout rowPrefab;
-    public List<StackLayout> rows = new List<StackLayout>();
-    public Dictionary<string, RectTransform> onlinePlayersDict = new Dictionary<string, RectTransform>();
+    public GridLayout playerList;
+    public List<string> players = new List<string>();
     public RectTransform onlinePlayerTilePrefab;
-
     public Toast disconnectToast;
-
     public bool online = false;
-
-    public List<string> onlinePlayers = new List<string>();
     public string Username { get => usernameText.text; private set => usernameText.SetTextWithoutNotify(value); }
 
     public void Start()
@@ -71,42 +65,35 @@ public class GameNetwork : MonoBehaviour
         client = new Client(Username);
     }
 
-    [ContextMenu("Host Game")]
+    public void Reconnect()
+    {
+        client.DisconnectLocal();
+        client = new Client(Username);
+        playerList.ClearGrid();
+        players.Clear();
+    }
+
     public async void HostNewGame()
     {
         if(!Application.isPlaying) return;
 
-        int code = Random.Range(100, 1000);
-
-        //try values until there is one that isn't taken
-        //TODO: Ask the server for a new code directly
-        int num = 0;
-        GameCode = code;
-        while (await client.HostGame(code) != true && num < 10)
-        {
-            code = Random.Range(100, 1000);
-            GameCode = code;
-            num++;
-        }
-
-        if(num == 10) 
-        {
-            throw new System.Exception("Could not host game, no valid codes found");
-        }
-
-        
+        GameCode = await client.HostGame();
     }
 
-    [ContextMenu("Join Game")]
-    public void JoinGame()
+    public async Task<bool> JoinGame(string code = "")
     {
-        if(!Application.isPlaying) return;
-        client.JoinGame(GameCode);
+        if(!Application.isPlaying) return false;
+        return await client.JoinGame(code == "" ? GameCode : code);
+    }
+
+    public async void JoinGameNoTask(string code = "")
+    {
+        await JoinGame(code);
     }
 
     public void SendTilebagState(TileBag bag)
     {
-        client.SendTilebagToServer(bag, GameCode);
+        client.SendTilebagToServer(bag, GameCode).Wait();
     }
 
     public void SendMove(Move move)
@@ -117,30 +104,12 @@ public class GameNetwork : MonoBehaviour
     public void PlayerOnline(string username)
     {
         Debug.Log("Player online: " + username);
-        StackLayout row = null;
-        foreach(var r in rows)
-        {
-            if(r.elements.Count == 3) continue;
-            row = r;
-            break;
-        }
 
-        if(row == null)
-        {
-            row = Instantiate(rowPrefab, onlinePlayersWaitingRoom.transform);
-            row.rectTransform.SetParent(onlinePlayersWaitingRoom.transform, false);
-            row.rectTransform.localPosition = Vector3.zero;
-            rows.Add(row);
-        }
-
-        var tile = Instantiate(onlinePlayerTilePrefab, row.transform);
-        tile.GetComponentInChildren<TMP_Text>().text = username;
-        tile.SetParent(row.transform, false);
-        tile.localPosition = Vector3.zero;
-
-        onlinePlayersDict.Add(username, tile);
-
-        onlinePlayers.Add(username);
+        var tile = Instantiate(onlinePlayerTilePrefab);
+        tile.GetComponentInChildren<TextDisplay>().SetText(username);
+        
+        playerList.AddItem(tile.gameObject);
+        players.Add(username);
 
         if(GameManager.instance != null)
         {
@@ -150,16 +119,7 @@ public class GameNetwork : MonoBehaviour
 
     public void PlayerOffline(string username)
     {
-        Debug.Log("Player offline");
-        if(onlinePlayersDict.ContainsKey(username))
-        {
-            Destroy(onlinePlayersDict[username].gameObject);
-            foreach(var r in rows)
-            {
-                r.BuildSections();
-            }
-            onlinePlayersDict.Remove(username);
-        }
+        Debug.Log("Player offline" + username);
     }
 
     public void OnDisconnected()

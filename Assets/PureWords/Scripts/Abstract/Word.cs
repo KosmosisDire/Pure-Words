@@ -64,7 +64,7 @@ public class Word
 
         indicator.transform.position = tiles[0].transform.position + new Vector3(-0.5f - margin, 0.5f + margin, valid ? -0.2f : -0.1f);
 
-        if(secondary)
+        if(secondary && secondaryWords != null)
         {
             secondaryWords.ToList().ForEach(word => word.ShowPlacementIndicator(dictionaryValid, dictionaryInvalid, margin));
         }
@@ -88,7 +88,7 @@ public class Word
             IncrementSortingOrder(-4);
         }
 
-        if(secondary)
+        if(secondary && secondaryWords != null)
         {
             secondaryWords.ToList().ForEach(w => w.HidePlacementIndicator());
         }

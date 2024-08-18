@@ -38,7 +38,7 @@ public class TileSpace : MonoBehaviour
             hovering = false;
         }
 
-        if(Input.GetMouseButton(0) && Input.touchCount == 1 && !hovering){
+        if((Input.GetMouseButton(0) || Input.touchCount == 1) && !hovering){
             Vector2 distance = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position;
             if(distance.sqrMagnitude < 1.5f)
             {

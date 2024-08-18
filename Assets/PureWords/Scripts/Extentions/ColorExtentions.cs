@@ -50,4 +50,9 @@ public static class ColorExtentions
         Color.RGBToHSV(color, out float h, out float s, out float _);
         return Color.HSVToRGB(h, s, Mathf.Clamp01(value));
     }
+    public static Color AddSaturation(this Color color, float value)
+    {
+        Color.RGBToHSV(color, out float h, out float s, out float v);
+        return Color.HSVToRGB(h, Mathf.Clamp01(s + value), v);
+    }
 }

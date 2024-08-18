@@ -75,8 +75,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291810009
-  m_fontColor: {r: 0.85, g: 0.8229212, b: 0.8125, a: 1}
+    rgba: 4287939579
+  m_fontColor: {r: 0.98490566, g: 0.7646118, b: 0.57956606, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -239,8 +239,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4293388504
-  m_fontColor: {r: 0.847, g: 0.90999997, b: 0.90744066, a: 1}
+    rgba: 4293522174
+  m_fontColor: {r: 0.9958491, g: 0.94755584, b: 0.9134665, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -389,7 +389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.050000012, g: 0.04097376, b: 0.03750001, a: 1}
+  m_Color: {r: 0.084905684, g: 0.08121413, b: 0.07811322, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -500,7 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.15, g: 0.12292125, b: 0.112500004, a: 1}
+  m_Color: {r: 0.21226415, g: 0.1834239, b: 0.1591981, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -534,12 +534,14 @@ MonoBehaviour:
     startColor:
       type: 2
       shade: 2
-      value: 0.8
+      value: -0.75
+      saturationOffset: 0
       complement: 0
     endColor:
       type: 3
       shade: 3
-      value: 0.8
+      value: 0
+      saturationOffset: 0
       complement: 0
   turnWidthMultiplier: 1.1
   background: {fileID: 3977905769996370126}
@@ -636,23 +638,27 @@ MonoBehaviour:
     color:
       type: 2
       shade: 2
-      value: -0.7
+      value: -0.75
+      saturationOffset: 0
       complement: 0
   - graphic: {fileID: 5608972018217241751}
     color:
-      type: 4
-      shade: 6
-      value: 0.7
-      complement: 1
+      type: 3
+      shade: 0
+      value: 0.89
+      saturationOffset: 0
+      complement: 0
   - graphic: {fileID: 9222923842076174459}
     color:
       type: 2
       shade: 1
       value: -0.9
+      saturationOffset: -0.17
       complement: 0
   - graphic: {fileID: 2140148359}
     color:
       type: 2
-      shade: 6
-      value: 0.7
+      shade: 7
+      value: 0.9
+      saturationOffset: 0.39
       complement: 0

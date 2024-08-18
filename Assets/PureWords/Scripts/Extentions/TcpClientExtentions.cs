@@ -13,7 +13,7 @@ public static class TcpClientExtentions
 {
     public static async Task<Message> SendMessageResponse(this TcpClient client, Message message, CancellationToken token = default)
     {   
-        if(client == null || (client != null && (!client.Connected || client.GetStream() == null))) return new Message(Message.MessageType.Error, "Client is not connected");
+        if(client == null || (client != null && (!client.Connected || client.GetStream() == null))) return new Message(MessageType.Error, "Client is not connected");
 
         try
         {
@@ -21,11 +21,14 @@ public static class TcpClientExtentions
         } 
         catch (TaskCanceledException) 
         {
-            return new Message(Message.MessageType.Error, "Task was canceled");
+            return new Message(MessageType.Error, "Task was canceled");
         }
 
         // Receive the response from the server.
-        Message response = await client.ReceiveMessage(token);
+        var timeoutToken = new CancellationTokenSource(5000).Token;
+        Console.WriteLine("Waiting for response");
+        Message response = await client.ReceiveMessage(timeoutToken);
+        Console.WriteLine("Received response");
 
         return response;
     }
@@ -51,7 +54,7 @@ public static class TcpClientExtentions
 
     public static async Task<Message> ReceiveMessage(this TcpClient client, CancellationToken token = default)
     {
-        if(client == null || (client != null && (!client.Connected || client.GetStream() == null))) return new Message(Message.MessageType.Error, "Client is not connected");
+        if(client == null || (client != null && (!client.Connected || client.GetStream() == null))) return new Message(MessageType.Error, "Client is not connected");
 
 
         // Receive the response from the server.
@@ -67,15 +70,20 @@ public static class TcpClientExtentions
         } 
         catch (TaskCanceledException)
         {
-            return new Message(Message.MessageType.Error);
+            return new Message(MessageType.Error);
         }
 
         string data = Encoding.UTF8.GetString(received, 4, read);
         //Debug.Log($"Received: {data}");
-        Message response = Message.Deserialize(data);
-        Debug.Log($"Received: {response.ToString()}");
+        Message? respOpt = Message.Deserialize(data);
 
-        if(read == 0 || (response.IsDisconnect && response.username == "NULL" && response.gameCode == -1))
+        if (respOpt == null) return new Message(MessageType.Error, "Failed to deserialize message");
+
+        Message response = respOpt.Value;
+
+        Debug.Log($"Received: {response}");
+
+        if(read == 0 || (response.IsDisconnect && response.username == "NULL" && response.gameCode == ""))
         {
             GameNetwork.instance.client.DisconnectLocal();
         }

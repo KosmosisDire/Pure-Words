@@ -12,10 +12,13 @@ public class ThemedColor
     [Range(-1,1)]
     [SerializeField]
     float value = 0.8f;
+    [Range(-1,1)]
+    [SerializeField]
+    float saturationOffset = 0;
 
     public float Value => shade == ColorShade.Custom ? value : SetShade();
     public bool complement;
-    public Color Color => ColorTheme.instance.GetColor(type, complement, Value);
+    public Color Color => ColorTheme.instance.GetColor(type, complement, Value, saturationOffset);
 
     public float SetShade()
     {
@@ -122,7 +125,7 @@ public class ColorTheme : MonoBehaviour
         LetterMultiply,
     }
 
-    public Color GetColor(ColorBase baseColor, bool complement, float value = 0.5f)
+    public Color GetColor(ColorBase baseColor, bool complement, float value = 0.5f, float saturationOffset = 0)
     {
         Color result = Color.white;
         switch(baseColor)
@@ -177,6 +180,8 @@ public class ColorTheme : MonoBehaviour
         {
             result = darkTheme ? result.Lighten(value) : result.Darken(value);
         }
+
+        result = result.AddSaturation(saturationOffset);
 
         return result;
     }

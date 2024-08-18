@@ -57,7 +57,7 @@ MonoBehaviour:
   globalSpacingMode: 0
   globalSpacing: 0
   autoSetGlobalSpacing: 1
-  spacingCorrectionSpeed: 2
+  spacingCorrectionSpeed: 10
   marginSpacingMode: 0
   marginsMode: 1
   marginMeasurmentDirection: 0
@@ -66,18 +66,18 @@ MonoBehaviour:
     left: 52
     bottom: 20
     right: 52
-  updateEveryFrame: 0
+  updateEveryFrame: 1
   updateInterval: 10
-  independentOfParent: 0
+  independentOfParent: 1
   sections:
   - elements: []
     intermediateFirst: {fileID: 0}
     intermediateLast: {fileID: 0}
     layout: {fileID: 1102819369360175029}
   rectTransform: {fileID: 1102819369360175031}
-  lastResolution: {x: 1440, y: 2560}
-  iterationsAfterChange: 0
-  timer: 9.972569
+  lastResolution: {x: 1080, y: 2280}
+  iterationsAfterChange: 2
+  timer: 10
 --- !u!114 &1102819369360175030
 MonoBehaviour:
   m_ObjectHideFlags: 0

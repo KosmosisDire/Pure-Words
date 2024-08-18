@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 9205922868322931159}
   - component: {fileID: 6660772964688044569}
   - component: {fileID: 3496702211405562462}
+  - component: {fileID: 7038899081350276173}
   m_Layer: 5
   m_Name: User Tile
   m_TagString: Untagged
@@ -66,7 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.28867927, g: 0.15697052, b: 0.063999645, a: 1}
+  m_Color: {r: 0.24056605, g: 0.13080877, b: 0.05333305, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -163,7 +164,7 @@ MonoBehaviour:
   rectTransform: {fileID: 56246213276112352}
   lastResolution: {x: 1080, y: 2280}
   iterationsAfterChange: 0
-  timer: 6.9165936
+  timer: 4.0365133
 --- !u!114 &9205922868322931159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +182,7 @@ MonoBehaviour:
   - {fileID: 56246213276112353}
   - {fileID: 56246214585031562}
   - {fileID: 56246213926162043}
+  fadeGroup: {fileID: 0}
   colorTweens: []
   startSize: {x: 0, y: 0}
   endSize: {x: 0, y: 0}
@@ -232,20 +234,39 @@ MonoBehaviour:
     color:
       type: 3
       shade: 2
-      value: -0.7
+      value: -0.75
+      saturationOffset: 0
       complement: 0
   - graphic: {fileID: 56246214585031562}
     color:
       type: 3
       shade: 5
       value: 0.5
+      saturationOffset: 0
       complement: 0
   - graphic: {fileID: 56246213926162043}
     color:
       type: 2
       shade: 5
-      value: 0
+      value: 0.5
+      saturationOffset: 0
       complement: 0
+--- !u!114 &7038899081350276173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56246213276112354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1903eacec2ec41249a2688d1f8b00707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 56246213926162043}
+  maxLetters: 100
+  pad: 0
+  textString: 
 --- !u!1 &56246213682108889
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,8 +409,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286162912
-  m_fontColor: {r: 0.8773585, g: 0.65619344, b: 0.47592562, a: 1}
+    rgba: 4291943916
+  m_fontColor: {r: 0.9245283, g: 0.8668478, b: 0.8183962, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

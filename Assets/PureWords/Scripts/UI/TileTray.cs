@@ -16,7 +16,6 @@ public class TileTray : MonoBehaviour
     public int UnplacedCount => unplacedTiles.Count;
     public int UncommitedCount => uncommitedTiles.Count;
 
-    [HideInInspector] public Tile selectedTile;
     public RectTransform tray;
     public Collider2D blockingCollider;
     new public Rigidbody2D rigidbody;
@@ -117,10 +116,15 @@ public class TileTray : MonoBehaviour
 
     public void UpdateTileScale(float tweenDuration = 0.4f)
     {
-        inTray.ForEach(tile => tile.transform.DOScale(TargetUITileSize, tweenDuration));
+        inTray.ForEach(tile => 
+        {
+            tile.transform.DOKill(true);
+            tile.transform.DOScale(TargetUITileSize, tweenDuration);
+        });
 
         //set tray rect top to fit the tiles
         Canvas c = FindObjectOfType<Canvas>(); 
+        tray.DOKill(true);
         tray.DOSizeDelta(new Vector2(tray.sizeDelta.x, TargetUITileSize.x * 1/c.transform.localScale.x * 1.7f), tweenDuration);
         
         UpdateTileLimits();
@@ -159,6 +163,33 @@ public class TileTray : MonoBehaviour
             Tile tile = NewTile(false, serialized[i]);
             tile.MoveToTray(true);
         }
+    }
+
+    public void ClearTray()
+    {
+        for (int i = 0; i < inTray.Count; i++)
+        {
+            Destroy(inTray[i].gameObject);
+        }
+
+        inTray.Clear();
+
+        for (int i = 0; i < unplacedTiles.Count; i++)
+        {
+            Destroy(unplacedTiles[i].gameObject);
+        }
+
+        unplacedTiles.Clear();
+
+        for (int i = 0; i < uncommitedTiles.Count; i++)
+        {
+            Destroy(uncommitedTiles[i].gameObject);
+        }
+
+        uncommitedTiles.Clear();
+
+        bag = new TileBag();
+        bag.Fill();
     }
 }
 

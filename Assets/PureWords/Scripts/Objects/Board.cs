@@ -46,11 +46,16 @@ public class Board : MonoBehaviour
 
 
     // Start is called before the first frame update
-    public void OnEnable()
+    public void Start()
     {
         if(instance == null) instance = this;
         else Destroy(gameObject);
 
+        GenerateBoard();
+    }
+
+    public void GenerateBoard()
+    {
         if(diameter % 2 == 0)
         {
             Debug.LogWarning("Diameter must be odd, incrementing by 1");
@@ -89,29 +94,31 @@ public class Board : MonoBehaviour
                     prefab = TWSpacePrefab;
                 }
 
-                // if((i % 15 == 0) && (j % 15 == 0))
-                // {
-                //     prefab = TWSpacePrefab;
-                // }
-                // else if((j == diameter - 1 || j == 0) && i == diameter / 2)
-                // {
-                //     prefab = TLSpacePrefab;
-                // }
-                // else if((i == diameter - 1 || i == 0) && j == diameter / 2 - 1)
-                // {
-                //     prefab = DWSpacePrefab;
-                // }
-                // else if((j == diameter - 1 || j == 0) && i == diameter / 2 - 1)
-                // {
-                //     prefab = DLSpacePrefab;
-                // }
-
                 TileSpace boardSpace = Instantiate(prefab, new Vector3(i - diameter/2, diameter/2 - j, 0), Quaternion.identity);
                 boardSpace.transform.SetParent(transform);
                 boardSpace.coordinates = new Vector2Int(i, j);
                 spaces.Add(new Vector2Int(i, j), boardSpace);
             }
         }
+    }
+
+    public void ResetBoard()
+    {
+        for (int i = 0; i < spaces.Count; i++)
+        {
+            var space = spaces.Values.ElementAt(i);
+            if(space.tile != null)
+            {
+                Destroy(space.tile.gameObject);
+            }
+            spaces.Remove(space.coordinates);
+            i--;
+            Destroy(space.gameObject);
+        }
+
+        totalTilesOnBoard = 0;
+        userPlacedTiles.Clear();
+        GenerateBoard(); 
     }
 
     public Tile CreatePermenantTile(char letter, Vector2Int pos)

@@ -31,6 +31,7 @@ public class AutoUpdate : MonoBehaviour
 
     public async Task<bool> NeedsNewVersion()
     {
+        return false;
         string url = "https://thecodespace.ddns.net/fileshare/words/v.txt";
         UnityWebRequest request = new UnityWebRequest(url);
         DownloadHandlerBuffer dH = new DownloadHandlerBuffer();

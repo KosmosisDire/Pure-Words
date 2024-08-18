@@ -91,7 +91,32 @@ public class Section
             endingPosition = intermediateLast.rectTransform.GetTopLeftOffset() + (intermediateLast.HasNestedLayout ? intermediateLast.nestedLayout.PixelOverflow : Vector2.zero);
         }
 
-        return endingPosition - startingPosition;
+        Vector2 SectionSpace = endingPosition - startingPosition;
+        float ElementHeight = layout.Vertical ? ((SectionSpace.y - (layout.overflowBehavior != Overflow.Scale ? 0 : layout.GlobalSpacing * (elements.Count - 1))) / elements.Count) : layout.NormalElementSize.y;
+        float ElementWidth = layout.Vertical ? layout.NormalElementSize.x : ((SectionSpace.x - (layout.overflowBehavior != Overflow.Scale ? 0 : layout.GlobalSpacing * (elements.Count - 1))) / elements.Count);
+
+        Vector2 spaceTakenByManualElements = Vector2.zero;
+        Vector2 spaceTakenByElementwiseSpacing = Vector2.zero;
+        for (int i = 0; i < elements.Count; i++)
+        {
+            Element element = elements[i];
+            if(!element.autoHeight)
+            {
+                spaceTakenByManualElements += Vector2.up * (element.rectTransform.rect.height - ElementHeight)*2;
+            }
+
+            if(!element.autoWidth)
+            {
+                spaceTakenByManualElements += Vector2.right * (element.rectTransform.rect.width - ElementWidth)*2;
+            }
+
+            if(layout.Vertical) spaceTakenByElementwiseSpacing += Vector2.up * element.ExtraSpacing * 2;
+            else spaceTakenByElementwiseSpacing += Vector2.right * element.ExtraSpacing * 2;
+        }
+
+        
+
+        return endingPosition - startingPosition - spaceTakenByManualElements - spaceTakenByElementwiseSpacing;
     }
 
     public bool BuildStack()
@@ -128,7 +153,7 @@ public class Section
             else size.x = Mathf.Lerp(size.x, size.y, element.squarness);
             
 
-            element.rectTransform.SetSize(size.x, size.y);
+            element.rectTransform.SetSizeInPixels(size.x, size.y);
 
             if(element.autoPosX && element.autoPosY) element.rectTransform.SetTopLeftOffset(xPos, yPos);
             else if(element.autoPosX) element.rectTransform.SetTopLeftOffset(RectTransform.Axis.Horizontal, xPos);

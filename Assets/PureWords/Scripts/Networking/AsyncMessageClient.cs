@@ -66,8 +66,9 @@ public class AsyncMessageClient
     private async void MovesConnectCallback(IAsyncResult ar)
     {
         context.Client.EndConnect(ar);
-        Message response = await context.Client.SendMessageResponse(new Message(Username, Message.MessageType.Socket, Username), token);
-        Debug.Log(response.data);
+        Console.WriteLine("Connected to server!");
+        Message response = await context.Client.SendMessageResponse(new Message(Username, MessageType.Connect, Username), token);
+        Debug.Log("Confirmation message: " + response);
         context.Stream = context.Client.GetStream();
         context.Stream.BeginRead(context.Buffer, 0, context.Buffer.Length, new AsyncCallback(MovesReadCallback), null);
     }
@@ -106,7 +107,9 @@ public class AsyncMessageClient
                 length -= read;
             }
 
-            Message m = Message.Deserialize(Encoding.UTF8.GetString(context.Message.GetBuffer(), 4, context.Message.GetBuffer().Length - 4));
+            Message? mOpt = Message.Deserialize(Encoding.UTF8.GetString(context.Message.GetBuffer(), 4, context.Message.GetBuffer().Length - 4));
+            if (mOpt == null) return;
+            Message m = mOpt.Value;
             Dispatcher.RunOnMainThread(() => handleMessage.Invoke(m, this));
 
             context.Stream.BeginRead(context.Buffer, 0, context.Buffer.Length, MovesReadCallback, context);

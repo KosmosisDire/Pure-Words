@@ -2,11 +2,12 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Remoting.Contexts;
+// using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 
@@ -25,12 +26,11 @@ public class Client
 
     public Client(string username)
     {
-        
         cts = new CancellationTokenSource();
         bool ipv6 = Socket.OSSupportsIPv6;
         try
         {   
-            foreach (IPAddress ip in Dns.GetHostAddresses("wordserver.servegame.com"))
+            foreach (IPAddress ip in Dns.GetHostAddresses("localhost"))
             {
                 if (ip.AddressFamily == (ipv6 ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork))
                 {
@@ -41,6 +41,7 @@ public class Client
 
             client = new TcpClient(new IPEndPoint(ipv6 ? IPAddress.IPv6Any : IPAddress.Any, 0));
             client.Connect(sep);
+            client.SendMessage(new Message(username, MessageType.Connect));
         }
         catch (Exception e)
         {
@@ -49,7 +50,7 @@ public class Client
             try
             {
                 ipv6 = false;
-                foreach (IPAddress ip in Dns.GetHostAddresses("wordserver.servegame.com"))
+                foreach (IPAddress ip in Dns.GetHostAddresses("localhost"))
                 {
                     if (ip.AddressFamily == (ipv6 ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork))
                     {
@@ -60,6 +61,7 @@ public class Client
 
                 client = new TcpClient(new IPEndPoint(ipv6 ? IPAddress.IPv6Any : IPAddress.Any, 0));
                 client.Connect(sep);
+                client.SendMessage(new Message(username, MessageType.Connect));
             }
             catch
             {
@@ -70,14 +72,14 @@ public class Client
             }
         }
         
-        asyncClient = new AsyncMessageClient(HandleGameMessage, sep, ipv6, cts.Token);
-        asyncClient.BeginReceive();
+        // asyncClient = new AsyncMessageClient(HandleGameMessage, sep, ipv6, cts.Token);
+        // asyncClient.BeginReceive();
         GameNetwork.instance.online = true;
     }
 
-    public async void SendMove(Move move, int gameCode)
+    public async void SendMove(Move move, string gameCode)
     {
-        Message response = await client.SendMessageResponse(new Message(Username, gameCode, Message.MessageType.Move, move.Serialize()), cts.Token);
+        Message response = await client.SendMessageResponse(new Message(Username, gameCode, MessageType.Move, move.Serialize()), cts.Token);
         if (!response.Successful)
         {
             throw new System.Exception(response.data);
@@ -88,48 +90,48 @@ public class Client
         }
     }
 
-    public async Task<bool> HostGame(int gameCode)
+    public async Task<string> HostGame()
     {
-        Message response = await client.SendMessageResponse(new Message(Username, gameCode, Message.MessageType.Host), cts.Token);
-        
+        Message response = await client.SendMessageResponse(new Message(Username, "", MessageType.Host), cts.Token);
         Debug.Log(response.data);
         if (response.Successful)
         {
+            GameNetwork.instance.GameCode = response.data;
             TileTray.instance.ReplenishTiles();
-            JoinGame(gameCode);
-            return true;
+            await JoinGame(response.data);
+            return response.data;
         }
 
-        return false;
+        return "";
     }
 
-    public async void JoinGame (int gameCode)
+    public async Task<bool> JoinGame(string gameCode)
     {
         TileTray.instance.Load();
-        Message response = await client.SendMessageResponse(new Message(Username, gameCode, Message.MessageType.Join), cts.Token);
+        Message response = await client.SendMessageResponse(new Message(Username, gameCode, MessageType.Join), cts.Token);
         Debug.Log(response.data);
         
         if(response.Successful)
         {
             gameJoined = true;
+            return true;
         }
-    }
-
-    public void DeleteGame(int gameCode)
-    {
-        Message response = client.SendMessageResponse(new Message(Username, gameCode, Message.MessageType.Delete), cts.Token).Result;
-
-        if(response.IsDelete)
+        else
         {
-            Debug.LogWarning("Implenmet Game deletion");
+            GameManager.instance.DeleteGame(gameCode, true); //delete game locally if it doesn't exist
+            GameManager.instance.ResetGame();
+            return false;
         }
-
-        Debug.Log(response.data);
     }
 
-    public void SendTilebagToServer(TileBag tileBag, int gameCode)
+    public void DeleteGame(string gameCode)
     {
-        asyncClient.BeginSendMessage(new Message(Username, gameCode, Message.MessageType.TilebagState, tileBag.Serialize()));
+        client.SendMessage(new Message(Username, gameCode, MessageType.Delete));
+    }
+
+    public async Task SendTilebagToServer(TileBag tileBag, string gameCode)
+    {
+        //await client.SendMessageResponse(new Message(Username, gameCode, MessageType.TilebagState, tileBag.Serialize()));
     }
 
     public void HandleGameMessage(Message message, AsyncMessageClient asyncClient)
@@ -181,12 +183,24 @@ public class Client
             return;
         }
         
-        if (message.IsDisconnect && message.username != "NULL" && message.gameCode != -1) //another player has gone inactive
+        if (message.IsDisconnect && message.username != "NULL" && message.gameCode != "") //another player has gone inactive
         {
             Dispatcher.RunOnMainThread
             (
                 () => {
                     GameNetwork.instance.PlayerOffline(message.data);
+                }
+            );
+            return;
+        }
+
+        if( message.IsDelete) //game has been deleted
+        {
+            Dispatcher.RunOnMainThread
+            (
+                () => {
+                    GameManager.instance.DeleteGame(message.gameCode, true);
+                    GameObject.FindGameObjectWithTag("BackButton").GetComponent<Button>().onClick.Invoke();
                 }
             );
             return;
@@ -197,7 +211,7 @@ public class Client
 
     public void BeginFullDisconnect()
     {
-        client.SendMessage(new Message(Username, Message.MessageType.Disconnect));
+        client.SendMessage(new Message(Username, MessageType.Disconnect));
     }
 
     bool disconnected = false;

@@ -36,9 +36,6 @@ public class Tile : MonoBehaviour
     [HideInInspector] public char letter = ' ';
     [HideInInspector] public int score = 0;
 
-    public TweenerCore<Vector3, Vector3, VectorOptions> currentScaleTween;
-    public TweenerCore<Vector3, Vector3, VectorOptions> currentMoveTween;
-
     public bool IsVowel => letter == 'A' || letter == 'E' || letter == 'I' || letter == 'O' || letter == 'U';
     Rigidbody2D rb;
     TargetJoint2D targetJoint;
@@ -113,16 +110,27 @@ public class Tile : MonoBehaviour
         }
     }
 
+    bool touchSelected = false;
     public void Update()
     {
         if(!init) Debug.LogWarning("Tile must be initialized before use with Tile.Init()!");
 
-        if((Input.touchCount == 0 || Input.GetMouseButtonUp(0)) && selected)
+        if(((touchSelected && Input.touchCount == 0) || Input.GetMouseButtonUp(0)) && selected)
         {
             Deselect();
         }
 
-        if(Input.GetMouseButtonDown(0) && Input.touchCount == 1){
+        if(Input.GetMouseButtonDown(0) || Input.touchCount == 1)
+        {
+            if (Input.touchCount == 1)
+            {
+                touchSelected = true;
+            }
+            else
+            {
+                touchSelected = false;
+            }
+
             Vector2 distance = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position;
             if(distance.sqrMagnitude < 1.5f)
             {
@@ -162,8 +170,8 @@ public class Tile : MonoBehaviour
 
         Camera.main.GetComponent<PanAndZoom>().controlCamera = false;
         
-        if(currentScaleTween != null) currentScaleTween.Kill();
-        currentScaleTween = transform.DOScale(TileTray.instance.TargetUITileSize * 1.2f, 0.2f).SetEase(Ease.InOutSine);
+        transform.DOKill(true);
+        transform.DOScale(TileTray.instance.TargetUITileSize * 1.2f, 0.2f).SetEase(Ease.InOutSine);
         
         if(placed) UserPickupTile();
     }
@@ -171,7 +179,8 @@ public class Tile : MonoBehaviour
     public void Deselect()
     {
         IncrementSortingOrder(-10);
-
+        
+        touchSelected = false;
         selectedTile = null;
         selected = false;
         rb.drag = 10;
@@ -194,9 +203,8 @@ public class Tile : MonoBehaviour
         solidCollider.enabled = true;
         
 
-        currentMoveTween.Kill();
+        transform.DOKill(true);
         var tween = transform.DOMoveY(TileTray.instance.rigidbody.position.y, 0.2f).SetEase(Ease.InOutSine);
-        currentMoveTween = tween;
         tween.OnComplete(() =>
         {
             sliderJoint.enabled = true;
@@ -230,8 +238,8 @@ public class Tile : MonoBehaviour
             rb.velocity = Vector2.zero;
             rb.angularVelocity = 0;
         }
-        if(currentScaleTween != null) currentScaleTween.Kill();
-        currentScaleTween = transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InOutSine);
+        transform.DOKill(true);
+        transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InOutSine);
     }
 
     public void SetPickupProperties()
@@ -261,9 +269,8 @@ public class Tile : MonoBehaviour
         placedSpace = Board.instance.spaces[space];
         Board.instance.totalTilesOnBoard++;
 
-        currentMoveTween.Kill();
+        transform.DOKill(true);
         var tween = transform.DOMove(Board.instance.spaces[space].transform.position + Vector3.forward * transform.position.z, 0.1f).SetEase(Ease.InOutSine);
-        currentMoveTween = tween;
         tween.OnComplete(() =>
         {
             GameManager.instance.CheckBoard();

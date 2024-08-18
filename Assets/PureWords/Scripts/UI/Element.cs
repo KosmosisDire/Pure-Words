@@ -48,6 +48,7 @@ public class Element : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         nestedLayout = rectTransform.GetComponent<StackLayout>();
+        transform.localScale = Vector3.one;
 
         if(init) return this;
 

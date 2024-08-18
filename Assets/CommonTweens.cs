@@ -37,56 +37,54 @@ public class CommonTweens : MonoBehaviour
 {
     public RectTransform rectTransform;
     public List<Graphic> fadeGraphic = new List<Graphic>();
+    public CanvasGroup fadeGroup;
     public List<ThemedColorTween> colorTweens = new List<ThemedColorTween>();
     public Vector2 startSize;
     public Vector2 endSize;
     public Vector2 startPosition;
     public Vector2 endPosition;
     public bool disableOnFadeOut = true;
-    public bool autoSetColorOnStart = true;
-
-    public void Start()
-    {
-        if (autoSetColorOnStart)
-        {
-            colorTweens.ForEach(t => t.graphic.color = t.EndColor);
-        }
-    }
-
-
-    public void FadeColorIn(float duration)
-    {
-        colorTweens.ForEach(t => t.PlayForward(duration));
-    }
-
-    public void FadeColorOut(float duration)
-    {
-        colorTweens.ForEach(t => t.PlayBackward(duration));
-    }
-
-    public void FadeAlphaIn(float duration)
-    {
-        gameObject.SetActive(true);
-        fadeGraphic.ForEach(g => g.color = new Color(g.color.r, g.color.g, g.color.b, 0));
-        fadeGraphic.ForEach(g => g.DOFade(1, duration));
-    }
-
-    public void FadeAlphaOut(float duration)
-    {
-        fadeGraphic.ForEach(g => g.color = new Color(g.color.r, g.color.g, g.color.b, 1));
-        fadeGraphic.ForEach(g => g.DOFade(0, duration));
-        if(disableOnFadeOut) StartCoroutine(SetActiveAfterDelay(duration, false));
-    }
 
     public void FadeAlphaInTolerant(float duration)
     {
         gameObject.SetActive(true);
-        fadeGraphic.ForEach(g => g.DOFade(1, duration));
+        fadeGraphic.ForEach(g => 
+        {
+            if(g != null)
+            {
+                g.DOKill(true); 
+                g.DOFade(1, duration);
+            }
+        });
+        
+        if(fadeGroup != null)
+        { 
+            fadeGroup.DOKill(true);
+            fadeGroup.DOFade(1, duration);
+            fadeGroup.blocksRaycasts = true;
+            fadeGroup.interactable = true;
+        }
     }
 
     public void FadeAlphaOutTolerant(float duration)
     {
-        fadeGraphic.ForEach(g => g.DOFade(0, duration));
+        fadeGraphic.ForEach(g => 
+        {
+            if(g != null)
+            {
+                g.DOKill(true);
+                g.DOFade(0, duration);
+            }
+        });
+        
+        if(fadeGroup != null)
+        { 
+            fadeGroup.DOKill(true);
+            fadeGroup.DOFade(0, duration);
+            fadeGroup.blocksRaycasts = false;
+            fadeGroup.interactable = false;
+        }
+
         if (disableOnFadeOut) StartCoroutine(SetActiveAfterDelay(duration, false));
     }
 

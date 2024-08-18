@@ -184,6 +184,14 @@ public class GameManager : MonoBehaviour
     readonly Dictionary<string, PlayerStats> playerStatistics = new Dictionary<string, PlayerStats>();
     public string turnUsername;
 
+    [Header("Games")]
+    public GameListGrid gamesList;
+    public bool editGamesList = false;
+    public void ToggleEditGames()
+    {
+        editGamesList = !editGamesList;
+    }
+
     public bool Paused { get; private set; }
 
     PointIndicator pointsIndicator;
@@ -272,6 +280,8 @@ public class GameManager : MonoBehaviour
         playerStats.transform.SetParent(playerStatsList.transform, false);
         playerStatistics.Add(username, playerStats);
         playerStats.Score = 0;
+
+        gamesList.AddPlayerToGame(username, GameNetwork.instance.GameCode);
     }
 
     public void AddToPlayerScore(string username, int add)
@@ -288,6 +298,12 @@ public class GameManager : MonoBehaviour
     public void SetPlayerTurn(string username)
     {
         Debug.Log("Turn: " + username);
+
+        if(!playerStatistics.ContainsKey(username))
+        {
+            AddPlayerToGame(username);
+        }
+
         isMyTurn = username == GameNetwork.instance.Username;
         if(!string.IsNullOrEmpty(turnUsername))
             playerStatistics[turnUsername].TurnEnd();
@@ -296,7 +312,7 @@ public class GameManager : MonoBehaviour
         playerStatistics[turnUsername].TurnStart();
 
         //vibrate phone if it's my turn
-        if(isMyTurn && GameNetwork.instance.onlinePlayers.Count > 1)
+        if(isMyTurn && GameNetwork.instance.players.Count > 1)
         {
             Handheld.Vibrate();
         }
@@ -325,7 +341,6 @@ public class GameManager : MonoBehaviour
         lastMove?.word.ShowPlacementIndicator(otherUserWordPlacement, wordIndicatorMargin);
     }
 
-
     public void SubmitCurrentBoard()
     {
         var (validMove, move) = CheckBoard();
@@ -351,6 +366,44 @@ public class GameManager : MonoBehaviour
         {
             notTurnToast.Peek(1500, 200);
         }
+    }
+
+    public void ClearPlayers()
+    {
+        for (int i = 0; i < playerStatistics.Count; i++)
+        {
+            var player = playerStatistics.ElementAt(i);
+            playerStatistics.Remove(player.Key);
+            i--;
+            Destroy(player.Value.gameObject);
+        }
+
+        playerStatistics.Clear();
+    }
+
+    public void DeleteGame(string code, bool onlyLocal = false)
+    {
+        if(!onlyLocal) GameNetwork.instance.client.DeleteGame(code);
+        gamesList.DeleteGame(code);
+        if(gamesList.elements.Count == 0) editGamesList = false;
+    }
+
+    public void ResetGame()
+    {
+        if(lastMove != null) lastMove?.word.HidePlacementIndicator(true);
+        if(currentWord != null) currentWord.HidePlacementIndicator(true);
+        pointsIndicator.gameObject.SetActive(false);
+        if(placedIndicator != null) Destroy(placedIndicator.gameObject);
+        currentWord = null;
+        lastMove = null;
+        points = 0;
+        isMyTurn = false;
+        turnUsername = null;
+
+        ClearPlayers();
+        TileTray.instance.ClearTray();
+        Board.instance.ResetBoard();
+        GameNetwork.instance.Reconnect();
     }
 
 }
